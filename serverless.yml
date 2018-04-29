@@ -1,0 +1,17 @@
+service: serverless
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+#  profile: femasters
+  region: us-east-1
+  stage: dev
+
+plugins:
+  - serverless-offline
+  - serverless-finch
+
+custom:
+  client:
+    bucketName: my-family-tree # (see Configuration Parameters below)
+    # [other configuration parameters] (see Configuration Parameters below)
