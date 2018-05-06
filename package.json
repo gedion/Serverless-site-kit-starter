@@ -5,19 +5,35 @@
   "author": "Gedion <gedion@umn.edu>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "webpack-dev-server --inline --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "unit": "jest --config test/unit/jest.conf.js --coverage",
     "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "sls-ol": "sls offline start --port 4500 --host 0.0.0.0",
+    "sls-ol-debug": "node --inspect-brk=0.0.0.0:8443 `which serverless` offline start --port 4500 --host 0.0.0.0",
+    "deploy": "sls deploy",
+    "deploy-client": "sls deploy client"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "circular-json": "^0.5.3",
+    "cjson": "^0.5.0",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "google-auth-library": "^1.4.0",
+    "google-oauth-jwt": "^0.2.0",
+    "google-spreadsheet": "^2.0.4",
+    "googleapis": "^29.0.0",
+    "lodash": "^4.17.10",
     "serverless-finch": "^2.1.0",
-    "serverless-offline": "^3.20.3",
+    "serverless-http": "^1.5.5",
+    "serverless-offline": "^3.20.2",
     "vue": "^2.5.2",
     "vue-material": "^1.0.0-beta-8",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vued3tree": "^3.5.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

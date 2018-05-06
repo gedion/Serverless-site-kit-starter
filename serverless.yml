@@ -13,5 +13,14 @@ plugins:
 
 custom:
   client:
-    bucketName: my-family-tree # (see Configuration Parameters below)
+    bucketName: methset # (see Configuration Parameters below)
     # [other configuration parameters] (see Configuration Parameters below)
+    #
+functions:
+  api:
+    handler: server/src/api/index.handler
+    events:
+      - http:
+          method: Any
+          path: /{proxy+}
+          cors: true

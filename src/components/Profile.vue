@@ -7,7 +7,7 @@
               <img src="https://vuematerial.io/assets/examples/avatar.png" alt="Avatar">
             </md-avatar>
 
-            <div class="md-title">{{ name }}</div>
+            <div class="md-title">{{ firstname }}</div>
             <div class="md-subhead">{{ nickName }}</div>
           </md-card-header>
 
@@ -33,7 +33,7 @@
 
 export default {
   name: 'Profile',
-  props: ['name', 'nickName', 'id']
+  props: ['firstname', 'nickName', 'id']
 }
 </script>
 
