@@ -6,7 +6,7 @@ const {auth} = require('google-auth-library');
 class Google {
   constructor (config) {
     this.config = config;
-    let sheetId = _.get(this.config, 'sheet_family_profiles');
+    let sheetId = _.trim(_.get(this.config, 'sheet_family_profiles'), '"');
     this.spreadsheet = new GoogleSpreadsheet(sheetId); // Sheet ID (visible in URL)i }
     this.getInfoAndWorksheets = this.getInfoAndWorksheets.bind(this)
     this.authenticate = this.authenticate.bind(this);
@@ -14,7 +14,7 @@ class Google {
 
   authenticate (done) {
     console.log('auth ', this.config.googleAuth);
-    let googleAuth = require(__dirname + this.config.googleAuth);
+    let googleAuth = require(__dirname + _.trim(this.config.googleAuth, '"'));
     this.spreadsheet.useServiceAccountAuth(googleAuth, done)
   }
 
@@ -49,9 +49,9 @@ class Google {
         if( err ) {
           console.log('Error: '+err);
         }
-        rows = _.chain(rows)
-          .map(_.partialRight(_.pick, Google.PROFILE_COL_KEYS))
-          .values()
+        rows = _.map(rows, (row) => {
+          return _.pick(row, Google.PROFILE_COL_KEYS)
+        })
         callback(null, rows)
     })
 

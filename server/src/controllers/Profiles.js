@@ -1,6 +1,7 @@
 'use strict'
 
 const ServiceGoogle = require('../service/Google')
+const _ = require('lodash')
 
 class Profiles {
   constructor (config) {
@@ -10,12 +11,19 @@ class Profiles {
     //  this.handleGoogleServiceResponse = this.handleGoogleServiceResponse(this);
   }
 
-  handleGoogleServiceResponse (res, err, profiles) {
-    res.json(profiles)
+  handleGoogleServiceResponse (id, res, err, profiles) {
+    if (id) {
+      let profile = _.find(profiles, {id})
+      console.log('profile ', profiles);
+      res.json(profile)
+    } else {
+      res.json(profiles)
+    }
   }
 
   get (req, res) {
-    this.serviceGoogle.getSpreadSheet(this.handleGoogleServiceResponse.bind(this, res));
+    let id =  _.get(req, 'params.id')
+    this.serviceGoogle.getSpreadSheet(this.handleGoogleServiceResponse.bind(this, id, res));
   }
 
   toString () {

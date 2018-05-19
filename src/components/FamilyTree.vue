@@ -1,9 +1,9 @@
 <template>
    <div class="col-md-9 panel panel-default">
-    <hierarchical-edge-bundling class="graph-root" ref="graph" :maxTextWidth="50" identifier="id" :duration="duration" @mouseNodeOver="mouseNodeOver" @mouseNodeOut="mouseNodeOut" :data="tree" :links="links" node-text="text" :margin-x="marginX" :margin-y="marginY"/>
+    <md-progress-spinner v-show="spinner" class="md-accent" md-mode="indeterminate"></md-progress-spinner>
+    <hierarchical-edge-bundling class="graph-root" ref="graph" :maxTextWidth="50" identifier="id" :duration="duration" @mouseNodeOver="mouseNodeOver" @mouseNodeOut="mouseNodeOut" @clicked="clicked" :data="tree" :links="links" node-text="text" :margin-x="marginX" :margin-y="marginY"/>
   </div>
 
-  </div>
 </template>
 
 <script>
@@ -51,22 +51,22 @@ const data = {
   loading: false,
   highlightedNode: null,
   tree: {},
-  links: []
+  links: [],
+  spinner: true
 }
 
-debugger;
 export default {
   name: 'app',
   data () {
     return data
   },
-  props: ['links', 'tree'],
+  props: ['links', 'tree', 'spinner'],
   mounted () {
     let self = this
     axios.get(process.env.awsProfilesApi + '/profiles', { crossdomain: true })
       .then(response => {
         let profiles = response.data
-        debugger;
+        self.spinner = false;
         self.links = getLinks(profiles)
         self.tree = { "text": "Root", "id":0, children: buildTree(profiles)}
       })
@@ -94,6 +94,11 @@ export default {
     mouseNodeOut (event) {
       this.onEvent('mouseNodeOut', event)
       this.changeCurrent(null)
+    },
+    onClick (event) {
+      this.onEvent('clicked', event)
+      let profileId = _.get(data, 'id');
+      this.router.push({ name: 'profile', params: { profileId }})
     }
   },
   watch: {
@@ -120,5 +125,8 @@ export default {
 .graph-root {
   height: 800px;
   width: 100%;
+}
+.md-progress-spinner {
+  margin: 24px;
 }
 </style>

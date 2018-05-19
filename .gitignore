@@ -15,3 +15,4 @@ yarn-error.log*
 *.sln
 .serverless/
 config/*.json
+config/*.js

@@ -16,7 +16,10 @@
           </md-card-media>
 
           <md-card-content>
-            Future Vet
+            {{ firstname }}
+          </md-card-content>
+          <md-card-content>
+            id = {{ id }}
           </md-card-content>
 
           <md-card-actions>
@@ -30,10 +33,27 @@
 </template>
 
 <script>
+import _ from 'lodash'
+import axios from 'axios'
 
 export default {
   name: 'Profile',
-  props: ['firstname', 'nickName', 'id']
+  props: ['firstname', 'nickName', 'id'],
+  data () {
+    return {
+      firstname: 'Junior'
+    }
+  },
+  mounted () {
+    let self = this;
+    let profileId = _.get(this.$route, 'params.id');
+    axios.get(process.env.awsProfilesApi + '/profile/' + profileId, { crossdomain: true })
+      .then(response => {
+        self.firstname = response.data.firstname;
+        self.nickName = response.data.nickName;
+        self.id = response.data.id;
+      })
+  }
 }
 </script>
 
@@ -46,8 +66,8 @@ export default {
 }
 
 .md-content {
-  width: 100px;
-  height: 100px;
+  width: 400px;
+  height: 400px;
   margin: 24px;
   display: flex;
   align-items: center;
